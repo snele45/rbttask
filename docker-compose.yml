@@ -1,0 +1,46 @@
+version: '3'
+services:
+  airflow-init:
+    image: rbttask:latest
+    entrypoint: ["sh", "-c", ". /opt/airflow/venv1/bin/activate && airflow db upgrade && sleep 10"]
+    environment:
+      - AIRFLOW__CORE__FERNET_KEY=DZ46qh9r3MrkuAYSLnJ1Cz7w36rupzmwXCksIdeQUps=
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      - PYTHONPATH=/opt/airflow/venv1/lib/python3.8/site-packages
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./data:/opt/airflow/data
+      - ./logs:/opt/airflow/logs
+    user: root
+
+  airflow-webserver:
+    image: rbttask:latest
+    restart: always
+    depends_on:
+      - airflow-init
+    environment:
+      - AIRFLOW__CORE__FERNET_KEY=DZ46qh9r3MrkuAYSLnJ1Cz7w36rupzmwXCksIdeQUps=
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      - PYTHONPATH=/opt/airflow/venv1/lib/python3.8/site-packages
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./data:/opt/airflow/data
+      - ./logs:/opt/airflow/logs
+    entrypoint: ["sh", "-c", "sleep 20 && . /opt/airflow/venv1/bin/activate && airflow webserver"]
+
+  airflow-scheduler:
+    image: rbttask:latest
+    restart: always
+    depends_on:
+      - airflow-init
+    environment:
+      - AIRFLOW__CORE__FERNET_KEY=DZ46qh9r3MrkuAYSLnJ1Cz7w36rupzmwXCksIdeQUps=
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      - PYTHONPATH=/opt/airflow/venv1/lib/python3.8/site-packages
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./data:/opt/airflow/data
+      - ./logs:/opt/airflow/logs
+    entrypoint: ["sh", "-c", "sleep 20 && . /opt/airflow/venv1/bin/activate && airflow scheduler"]
