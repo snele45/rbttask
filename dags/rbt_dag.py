@@ -3,10 +3,17 @@ from airflow import DAG
 from airflow.operators.python import PythonOperator
 import pandas as pd
 from airflow.utils.dates import days_ago
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def read_csvs(**kwargs):
-    df1 = pd.read_csv("/home/snele/rbttask/data/zoo_animals.csv")
-    df2 = pd.read_csv("/home/snele/rbttask/data/zoo_health_records.csv")
+
+    zoo_animals_path = os.path.join(BASE_DIR, "../data/zoo_animals.csv")
+    zoo_health_records_path = os.path.join(BASE_DIR, "../data/zoo_health_records.csv")
+    
+    df1 = pd.read_csv(zoo_animals_path)
+    df2 = pd.read_csv(zoo_health_records_path)
     
     df1_json = df1.to_json()
     df2_json = df2.to_json()
@@ -50,7 +57,11 @@ def aggregation(**kwargs):
     kwargs['ti'].xcom_push(key='health_status_count', value=health_status_count.to_json())
 
 
-
+def load(**kwargs):
+    df_json = kwargs['ti'].xcom_pull(key='validated_data', task_ids='aggregate_task')
+    df = pd.read_json(df_json)
+    etl_path = os.path.join(BASE_DIR, "../data/etl_zoo.csv")
+    df.to_csv(etl_path,index=False)
 
 
 dag = DAG(
@@ -82,7 +93,12 @@ aggregate_task = PythonOperator(
     dag = dag,
 )
 
+load_task = PythonOperator(
+    task_id = 'load_task',
+    python_callable=load,
+    provide_context=True,
+    dag=dag
+)
 
 
-
-extract_task >> transform_task >> aggregate_task 
+extract_task >> transform_task >> aggregate_task >> load_task

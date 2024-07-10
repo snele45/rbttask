@@ -1,0 +1,42 @@
+animal_id,animal_name,age,species,checkup_date,health_status
+1,Lion,3,Mammal,2023-03-14,Healthy
+3,Elephant,5,Mammal,2023-01-30,Healthy
+4,Zebra,4,Mammal,2023-05-05,Healthy
+6,Penguin,2,Bird,2023-06-20,Healthy
+8,Flamingo,4,Bird,2023-03-23,Needs Attention
+9,Kangaroo,6,Mammal,2023-02-08,Healthy
+10,Panda,7,Mammal,2023-06-01,Needs Attention
+11,Leopard,4,Mammal,2023-04-25,Healthy
+13,Peacock,3,Bird,2023-01-18,Healthy
+14,Crocodile,5,Reptile,2023-06-30,Needs Attention
+15,Alligator,6,Reptile,2023-03-12,Healthy
+16,Rhinoceros,7,Mammal,2023-02-27,Needs Attention
+17,Hippopotamus,8,Mammal,2023-04-07,Healthy
+19,Bison,3,Mammal,2023-03-03,Healthy
+20,Chimpanzee,4,Mammal,2023-07-01,Needs Attention
+21,Fox,5,Mammal,2023-01-10,Healthy
+22,Wolf,6,Mammal,2023-04-14,Needs Attention
+23,Otter,2,Mammal,2023-05-18,Healthy
+24,Seal,3,Mammal,2023-02-20,Needs Attention
+25,Walrus,4,Mammal,2023-03-21,Healthy
+27,Armadillo,6,Mammal,2023-01-15,Healthy
+28,Ostrich,7,Bird,2023-04-29,Needs Attention
+29,Eagle,8,Bird,2023-02-13,Healthy
+30,Hawk,2,Bird,2023-07-07,Needs Attention
+31,Falcon,3,Bird,2023-05-01,Healthy
+33,Swan,5,Bird,2023-06-19,Healthy
+34,Duck,6,Bird,2023-04-02,Needs Attention
+35,Goose,7,Bird,2023-01-22,Healthy
+36,Turkey,8,Bird,2023-05-28,Needs Attention
+37,Llama,2,Mammal,2023-03-27,Healthy
+38,Alpaca,3,Mammal,2023-06-10,Needs Attention
+39,Porcupine,4,Mammal,2023-02-17,Healthy
+40,Hedgehog,5,Mammal,2023-04-11,Needs Attention
+41,Beaver,6,Mammal,2023-07-05,Healthy
+42,Bat,7,Mammal,2023-03-09,Needs Attention
+43,Mole,8,Mammal,2023-01-20,Healthy
+45,Guinea Pig,3,Mammal,2023-05-07,Healthy
+46,Gerbil,4,Mammal,2023-02-26,Needs Attention
+47,Ferret,5,Mammal,2023-04-17,Healthy
+48,Chinchilla,6,Mammal,2023-01-28,Needs Attention
+49,Raccoon,7,Mammal,2023-03-31,Healthy
