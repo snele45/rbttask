@@ -30,6 +30,27 @@ def transform_df(**kwargs):
 
     df = df[df['health_status'].isin(['Healthy', 'Needs Attention'])]
     
+    df_json = df.to_json()
+    kwargs['ti'].xcom_push(key = 'transformed_df', value = df_json)
+
+
+
+def aggregation(**kwargs):
+    
+    df_json = kwargs['ti'].xcom_pull(key ='transformed_df', task_ids='transform_task')
+    df = pd.read_json(df_json)
+    species_count = df.groupby('species').size().reset_index(name='count')
+    health_status_count = df.pivot_table(index='species', columns='health_status', aggfunc='size', fill_value=0).reset_index()
+    total_animals_count = df.shape[0]
+    aggregated_count = health_status_count[['Healthy', 'Needs Attention']].sum().sum()
+    assert total_animals_count == aggregated_count, "Some data is not valid!"
+
+    kwargs['ti'].xcom_push(key='validated_data', value=df.to_json())
+    kwargs['ti'].xcom_push(key='species_count', value=species_count.to_json())
+    kwargs['ti'].xcom_push(key='health_status_count', value=health_status_count.to_json())
+
+
+
 
 
 dag = DAG(
@@ -54,6 +75,14 @@ transform_task = PythonOperator(
     dag = dag,
 )
 
+aggregate_task = PythonOperator(
+    task_id = 'aggregate_task',
+    python_callable=aggregation,
+    provide_context = True,
+    dag = dag,
+)
 
 
-extract_task >> transform_task
+
+
+extract_task >> transform_task >> aggregate_task 
